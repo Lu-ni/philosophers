@@ -4,20 +4,26 @@ void *supervising(void *arr)
 {
 	t_philo *philos;
 	philos = (t_philo *) arr;
+	t_params *params = philos[0].params;
 	int i = 0;
+	long long last_meal = 0;
     printf("supervising !\n");
 	while(1)
 	{
 		if (philos[i].id == -1)
-			i = 0;
-		pthread_mutex_lock(&philos[i].last_meal_lock);
-		if ((philos[i].last_meal_time + 8000) < current_time()) //need to fetch time_do_die and replace 8000 value
 		{
-			printf("philo %i is dead because its last meal was at %lli and its now %lli\n", philos[i].id, philos[i].last_meal_time, current_time());
-			exit(1);
+			usleep(8000);
+			i = 0;
+		}
+		pthread_mutex_lock(&philos[i].last_meal_lock);
+		last_meal = philos[i].last_meal_time;
+		pthread_mutex_unlock(&philos[i].last_meal_lock);
+		if ((philos[i].last_meal_time + params->time_to_die) < current_time())
+		{
+			printf("philo %i is dead because its last meal was at %lli and its now %lli \t delta: %lli)\n", philos[i].id, last_meal - params->start_time, current_time() - params->start_time,  (current_time() - params->start_time) - (last_meal - params->start_time));
+			//exit(1);
 	//		return NULL;
 		}
-		pthread_mutex_unlock(&philos[i].last_meal_lock);
 		i ++;
 	}
 }
@@ -42,9 +48,10 @@ int main(int argc, char **argv) {
 
     init_philos(&params, philos);
 	pthread_t supervisor;
-	pthread_create(&supervisor, NULL, supervising, &philos);
     for (int i = 0; i < params.number_of_philosophers; i++)
         pthread_create(&philos[i].thread, NULL, philosopher_thread, &philos[i]);
+
+	pthread_create(&supervisor, NULL, supervising, &philos);
 	pthread_join(supervisor, NULL);
 
     for (int i = 0; i < params.number_of_philosophers; i++)
