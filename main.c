@@ -12,7 +12,7 @@ void *supervising(void *arr)
 	{
 		if (i >= params->number_of_philosophers)
 		{
-			usleep(8000);
+			busy_wait(8000);
 			i = 0;
 		}
 		pthread_mutex_lock(&philos[i].last_meal_lock);
@@ -60,6 +60,6 @@ int main(int argc, char **argv) {
     for (int i = 0; i < params.number_of_philosophers; i++)
         pthread_join(philos[i].thread, NULL);
 
-    cleanup(&params, philos);
+//    cleanup(&params, philos);
     return 0;
 }

@@ -36,4 +36,5 @@ void cleanup(t_params *params, t_philo *philos);
 void print_status(t_philo *philo, const char *status);
 void init_philos(t_params *params, t_philo *philos);
 void *philosopher_thread(void *args);
+void busy_wait(int microseconds);
 #endif

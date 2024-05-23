@@ -36,23 +36,23 @@ void *philosopher_thread(void *args)
 {
 	t_philo *philo = (t_philo *) args;
 	if (philo->id % 2)
-		usleep(philo->params->time_to_eat * 500);
+		busy_wait(philo->params->time_to_eat * 500);
 	while(!philo->params->dead)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "as taken the left fork");
+		print_status(philo, "has taken the left fork");
 		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "as taken the right fork");
+		print_status(philo, "has taken the right fork");
 		print_status(philo, "is eating");
 		pthread_mutex_lock(&philo->last_meal_lock);
 		philo->last_meal_time = current_time();
 		pthread_mutex_unlock(&philo->last_meal_lock);
-		usleep(philo->params->time_to_eat * 1000);
+		busy_wait(philo->params->time_to_eat * 1000);
 		philo->meals_eaten ++;
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 		print_status(philo, "is sleeping");
-		usleep(philo->params->time_to_sleep * 1000);
+		busy_wait(philo->params->time_to_sleep * 1000);
 		print_status(philo, "is thinking");
 	}
 	return NULL;
