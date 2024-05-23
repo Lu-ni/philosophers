@@ -37,7 +37,7 @@ void *philosopher_thread(void *args)
 	t_philo *philo = (t_philo *) args;
 	if (philo->id % 2)
 		usleep(philo->params->time_to_eat * 500);
-	while(1)
+	while(!philo->params->dead)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		print_status(philo, "as taken the left fork");

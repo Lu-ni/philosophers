@@ -10,7 +10,7 @@ void *supervising(void *arr)
     printf("supervising !\n");
 	while(1)
 	{
-		if (philos[i].id == -1)
+		if (i >= params->number_of_philosophers)
 		{
 			usleep(8000);
 			i = 0;
@@ -22,8 +22,9 @@ void *supervising(void *arr)
 		if ((philos[i].last_meal_time + params->time_to_die) < current_time())
 		{
 			printf("philo %i is dead because its last meal was at %lli and its now %lli \t delta: %lli\n", philos[i].id, last_meal - params->start_time, current_time() - params->start_time,  (current_time() - params->start_time) - (last_meal - params->start_time));
-			exit(1);
-	//		return NULL;
+			params->dead = 1;
+			//exit(1);
+			return NULL;
 		}
 		i ++;
 	}
@@ -43,8 +44,7 @@ int main(int argc, char **argv) {
     params.time_to_sleep = atoi(argv[4]);
     params.number_of_times_each_philosopher_must_eat = (argc == 6) ? atoi(argv[5]) : -1;
 
-    t_philo philos[params.number_of_philosophers + 1];
-	philos[params.number_of_philosophers].id = -1;
+    t_philo philos[params.number_of_philosophers];
     params.forks = malloc(params.number_of_philosophers * sizeof(pthread_mutex_t));
     for (int i = 0; i < params.number_of_philosophers; i++)
         pthread_mutex_init(&params.forks[i], NULL);
