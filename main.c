@@ -18,10 +18,11 @@ void *supervising(void *arr)
 		pthread_mutex_lock(&philos[i].last_meal_lock);
 		last_meal = philos[i].last_meal_time;
 		pthread_mutex_unlock(&philos[i].last_meal_lock);
+	//	printf("delta: %lli)\n", (current_time() - params->start_time) - (last_meal - params->start_time));
 		if ((philos[i].last_meal_time + params->time_to_die) < current_time())
 		{
-			printf("philo %i is dead because its last meal was at %lli and its now %lli \t delta: %lli)\n", philos[i].id, last_meal - params->start_time, current_time() - params->start_time,  (current_time() - params->start_time) - (last_meal - params->start_time));
-			//exit(1);
+			printf("philo %i is dead because its last meal was at %lli and its now %lli \t delta: %lli\n", philos[i].id, last_meal - params->start_time, current_time() - params->start_time,  (current_time() - params->start_time) - (last_meal - params->start_time));
+			exit(1);
 	//		return NULL;
 		}
 		i ++;
@@ -35,6 +36,8 @@ int main(int argc, char **argv) {
 
     t_params params;
     params.number_of_philosophers = atoi(argv[1]);
+	if (params.number_of_philosophers < 1)
+		return 0;
     params.time_to_die = atoi(argv[2]);
     params.time_to_eat = atoi(argv[3]);
     params.time_to_sleep = atoi(argv[4]);

@@ -12,7 +12,6 @@ typedef struct s_params {
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
-    int time_to_think;
     int number_of_times_each_philosopher_must_eat;
     pthread_mutex_t *forks;
     pthread_mutex_t print_lock;
