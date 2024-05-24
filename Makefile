@@ -2,7 +2,7 @@ NAME = philo
 
 CC = gcc
 CFLAGS = -g #-Wall -Wextra -Werror
-SRCS = main.c philo.c utils.c
+SRCS = main.c philo.c utils.c ft_atoi.c
 OBJS_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

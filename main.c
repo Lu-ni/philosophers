@@ -44,13 +44,13 @@ int main(int argc, char **argv) {
     }
 
     t_params params;
-    params.num_philo = atoi(argv[1]);
+    params.num_philo = ft_atoi(argv[1]);
 	if (params.num_philo < 1)
 		return 0;
-    params.time_to_die = atoi(argv[2]);
-    params.time_to_eat = atoi(argv[3]);
-    params.time_to_sleep = atoi(argv[4]);
-    params.max_serving = (argc == 6) ? atoi(argv[5]) : -1;
+    params.time_to_die = ft_atoi(argv[2]);
+    params.time_to_eat = ft_atoi(argv[3]);
+    params.time_to_sleep = ft_atoi(argv[4]);
+    params.max_serving = (argc == 6) ? ft_atoi(argv[5]) : -1;
 
     t_philo philos[params.num_philo];	
     params.forks = malloc(params.num_philo * sizeof(pthread_mutex_t));
