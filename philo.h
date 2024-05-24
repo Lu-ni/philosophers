@@ -42,6 +42,6 @@ void				init_philos(t_params *params, t_philo *philos);
 void				*philosopher_thread(void *args);
 void				busy_wait(int microseconds);
 int					ft_atoi(const char *str);
-void *supervising(void *arr);
+void				*supervising(void *arr);
 
 #endif

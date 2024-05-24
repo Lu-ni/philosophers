@@ -10,11 +10,12 @@ long long	current_time(void)
 }
 void	busy_wait(int microseconds)
 {
-	struct timeval start;
-	struct timeval current;
-	gettimeofday(&start, NULL);
+	struct timeval	start;
+	struct timeval	current;
+	long long		elapsed;
 
-	long long elapsed = 0;
+	gettimeofday(&start, NULL);
+	elapsed = 0;
 	while (elapsed < microseconds)
 	{
 		usleep(100);
@@ -23,14 +24,14 @@ void	busy_wait(int microseconds)
 				- start.tv_usec);
 	}
 }
-void *supervising(void *arr)
+void	*supervising(void *arr)
 {
 	t_philo *philos;
-	philos = (t_philo *) arr;
+	philos = (t_philo *)arr;
 	t_params *params = philos[0].params;
 	int i = 0;
 	long long last_meal = 0;
-	while(1)
+	while (1)
 	{
 		if (i >= params->num_philo)
 		{
@@ -46,17 +47,18 @@ void *supervising(void *arr)
 			pthread_mutex_lock(&params->lock_dead);
 			params->dead = 1;
 			pthread_mutex_unlock(&params->lock_dead);
-			return NULL;
+			return (NULL);
 		}
 		pthread_mutex_lock(&params->philos_done_lock);
-		if (params->max_serving > 1 &&  params->philos_done >= params->num_philo)
+		if (params->max_serving > 1 && params->philos_done >= params->num_philo)
 		{
 			params->dead = 1;
-			printf("All philosophers have eaten %d times\n", params->max_serving);
+			printf("All philosophers have eaten %d times\n",
+				params->max_serving);
 			pthread_mutex_unlock(&params->philos_done_lock);
-			return NULL;
+			return (NULL);
 		}
 		pthread_mutex_unlock(&params->philos_done_lock);
-		i ++;
+		i++;
 	}
 }
