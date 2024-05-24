@@ -11,7 +11,7 @@ void *supervising(void *arr)
 	{
 		if (i >= params->num_philo)
 		{
-			busy_wait(500);
+			busy_wait(1000);
 			i = 0;
 		}
 		pthread_mutex_lock(&philos[i].last_meal_lock);
@@ -25,6 +25,15 @@ void *supervising(void *arr)
 			pthread_mutex_unlock(&params->lock_dead);
 			return NULL;
 		}
+		pthread_mutex_lock(&params->philos_done_lock);
+		if (params->max_serving > 1 &&  params->philos_done >= params->num_philo)
+		{
+			params->dead = 1;
+			printf("All philosophers have eaten %d times\n", params->max_serving);
+			pthread_mutex_unlock(&params->philos_done_lock);
+			return NULL;
+		}
+		pthread_mutex_unlock(&params->philos_done_lock);
 		i ++;
 	}
 }
@@ -49,7 +58,6 @@ int main(int argc, char **argv) {
 		return 0;
     for (int i = 0; i < params.num_philo; i++)
         pthread_mutex_init(&params.forks[i], NULL);
-
     init_philos(&params, philos);
 	pthread_t supervisor;
     for (int i = 0; i < params.num_philo; i++)
@@ -57,10 +65,8 @@ int main(int argc, char **argv) {
 
 	pthread_create(&supervisor, NULL, supervising, &philos);
 	pthread_join(supervisor, NULL);
-
     for (int i = 0; i < params.num_philo; i++)
     	pthread_join(philos[i].thread, NULL);
-
     cleanup(&params, philos);
 	return 0;
 }

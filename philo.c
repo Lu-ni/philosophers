@@ -12,6 +12,9 @@ void init_philos(t_params *params, t_philo *philos) {
     }
 	pthread_mutex_init(&params->lock_dead, NULL);
 	pthread_mutex_init(&params->print_lock, NULL);
+	pthread_mutex_init(&params->philos_done_lock, NULL);
+	params->philos_done = 0;
+	params->dead = 0;
     params->start_time = current_time();
 }
 
@@ -58,6 +61,13 @@ void *philosopher_thread(void *args)
 			philo->meals_eaten ++;
 			pthread_mutex_unlock(philo->right_fork);
 			pthread_mutex_unlock(philo->left_fork);
+			if (philo->meals_eaten == philo->params->max_serving)
+			{
+				pthread_mutex_lock(&philo->params->philos_done_lock);
+				philo->params->philos_done ++;
+				pthread_mutex_unlock(&philo->params->philos_done_lock);
+				//return NULL;
+			}
 			print_status(philo, "is sleeping");
 			busy_wait(philo->params->time_to_sleep * 1000);
 			print_status(philo, "is thinking");

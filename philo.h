@@ -13,10 +13,12 @@ typedef struct s_params {
     int time_to_eat;
     int time_to_sleep;
     int max_serving;
+    int philos_done;
 	int dead;
     pthread_mutex_t lock_dead;
     pthread_mutex_t *forks;
     pthread_mutex_t print_lock;
+    pthread_mutex_t philos_done_lock;
     long long start_time;
 } t_params;
 
