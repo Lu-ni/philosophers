@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:28:04 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:34:20 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:36:23 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,13 @@ void	busy_wait(int microseconds)
 
 void	*supervising(void *arr)
 {
-	t_philo *philos;
-	int i;
-	long long last_meal;
+	t_philo		*philos;
+	int			i;
+	long long	last_meal;
+	t_params	*params;
 
 	philos = (t_philo *)arr;
-	t_params *params = philos[0].params;
+	params = philos[0].params;
 	i = 0;
 	last_meal = 0;
 	while (1)
