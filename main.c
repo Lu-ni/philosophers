@@ -18,11 +18,13 @@ void *supervising(void *arr)
 		pthread_mutex_lock(&philos[i].last_meal_lock);
 		last_meal = philos[i].last_meal_time;
 		pthread_mutex_unlock(&philos[i].last_meal_lock);
-	//	printf("delta: %lli)\n", (current_time() - params->start_time) - (last_meal - params->start_time));
-		if ((philos[i].last_meal_time + params->time_to_die) < current_time())
+		if ((last_meal + params->time_to_die) < current_time())
 		{
-			printf("philo %i is dead because its last meal was at %lli and its now %lli \t delta: %lli\n", philos[i].id, last_meal - params->start_time, current_time() - params->start_time,  (current_time() - params->start_time) - (last_meal - params->start_time));
+			print_status(&philos[i], "died");
+			//printf("philo %i is dead because its last meal was at %lli and its now %lli \t delta: %lli\n", philos[i].id, last_meal - params->start_time, current_time() - params->start_time,  (current_time() - params->start_time) - (last_meal - params->start_time));
+			pthread_mutex_lock(&params->lock_dead);
 			params->dead = 1;
+			pthread_mutex_unlock(&params->lock_dead);
 			//exit(1);
 			return NULL;
 		}
@@ -44,7 +46,7 @@ int main(int argc, char **argv) {
     params.time_to_sleep = atoi(argv[4]);
     params.number_of_times_each_philosopher_must_eat = (argc == 6) ? atoi(argv[5]) : -1;
 
-    t_philo philos[params.number_of_philosophers];
+    t_philo philos[params.number_of_philosophers];	
     params.forks = malloc(params.number_of_philosophers * sizeof(pthread_mutex_t));
     for (int i = 0; i < params.number_of_philosophers; i++)
         pthread_mutex_init(&params.forks[i], NULL);
@@ -57,9 +59,9 @@ int main(int argc, char **argv) {
 	pthread_create(&supervisor, NULL, supervising, &philos);
 	pthread_join(supervisor, NULL);
 
-    for (int i = 0; i < params.number_of_philosophers; i++)
-        pthread_join(philos[i].thread, NULL);
+    //for (int i = 0; i < params.number_of_philosophers; i++)
+    //    pthread_join(philos[i].thread, NULL);
 
-//    cleanup(&params, philos);
+    //cleanup(&params, philos);
     return 0;
 }
