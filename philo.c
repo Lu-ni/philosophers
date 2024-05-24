@@ -1,8 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 16:27:20 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/05/24 16:33:58 by lnicolli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	init_philos(t_params *params, t_philo *philos)
 {
-	for (int i = 0; i < params->num_philo; i++)
+	int	i;
+
+	i = 0;
+	while (i < params->num_philo)
 	{
 		philos[i].id = i + 1;
 		philos[i].left_fork = &params->forks[i];
@@ -10,7 +25,7 @@ void	init_philos(t_params *params, t_philo *philos)
 		philos[i].params = params;
 		philos[i].last_meal_time = current_time();
 		philos[i].meals_eaten = 0;
-		pthread_mutex_init(&philos[i].last_meal_lock, NULL);
+		pthread_mutex_init(&philos[i++].last_meal_lock, NULL);
 	}
 	pthread_mutex_init(&params->lock_dead, NULL);
 	pthread_mutex_init(&params->print_lock, NULL);
@@ -41,8 +56,11 @@ void	print_status(t_philo *philo, const char *status)
 
 void	cleanup(t_params *params, t_philo *philos)
 {
-	for (int i = 0; i < params->num_philo; i++)
-		pthread_mutex_destroy(&params->forks[i]);
+	int	i;
+
+	i = 0;
+	while (i < params->num_philo)
+		pthread_mutex_destroy(&params->forks[i++]);
 	pthread_mutex_destroy(&params->print_lock);
 	free(params->forks);
 }

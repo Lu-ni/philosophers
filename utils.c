@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/24 16:28:04 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/05/24 16:34:20 by lnicolli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 long long	current_time(void)
@@ -8,6 +20,7 @@ long long	current_time(void)
 		printf("something went wrong with getting the time\n");
 	return (tv.tv_sec * 1000LL + tv.tv_usec / 1000);
 }
+
 void	busy_wait(int microseconds)
 {
 	struct timeval	start;
@@ -24,13 +37,17 @@ void	busy_wait(int microseconds)
 				- start.tv_usec);
 	}
 }
+
 void	*supervising(void *arr)
 {
 	t_philo *philos;
+	int i;
+	long long last_meal;
+
 	philos = (t_philo *)arr;
 	t_params *params = philos[0].params;
-	int i = 0;
-	long long last_meal = 0;
+	i = 0;
+	last_meal = 0;
 	while (1)
 	{
 		if (i >= params->num_philo)
