@@ -62,10 +62,9 @@ void	*philosopher_thread(void *args)
 			print_status(philo, "has taken a fork");
 			pthread_mutex_lock(philo->right_fork);
 			print_status(philo, "has taken a fork");
-			print_status(philo, "is eating");
-			pthread_mutex_lock(&philo->last_meal_lock);
-			philo->last_meal_time = current_time();
 			pthread_mutex_unlock(&philo->last_meal_lock);
+			print_status(philo, "is eating");
+			philo->last_meal_time = current_time();
 			busy_wait(philo->params->time_to_eat * 1000);
 			philo->meals_eaten++;
 			pthread_mutex_unlock(philo->right_fork);
