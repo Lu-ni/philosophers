@@ -1,38 +1,42 @@
 #include "philo.h"
 
 void init_philos(t_params *params, t_philo *philos) {
-    for (int i = 0; i < params->number_of_philosophers; i++) {
+    for (int i = 0; i < params->num_philo; i++) {
         philos[i].id = i + 1;
         philos[i].left_fork = &params->forks[i];
-        philos[i].right_fork = &params->forks[(i + 1) % params->number_of_philosophers];
+        philos[i].right_fork = &params->forks[(i + 1) % params->num_philo];
         philos[i].params = params;
         philos[i].last_meal_time = current_time();
         philos[i].meals_eaten = 0;
         pthread_mutex_init(&philos[i].last_meal_lock, NULL);
     }
 	pthread_mutex_init(&params->lock_dead, NULL);
+	pthread_mutex_init(&params->print_lock, NULL);
     params->start_time = current_time();
 }
 
-void print_status(t_philo *philo, const char *status) { // this log is slow and sloweverything
+void print_status(t_philo *philo, const char *status) {
     t_params *params = philo->params;
     pthread_mutex_lock(&params->print_lock);
-    printf("%lld %d %s\n", current_time() - params->start_time, philo->id, status);
+	pthread_mutex_lock(&params->lock_dead);
+	if (params->dead)
+	{
+		pthread_mutex_unlock(&params->lock_dead);
+		pthread_mutex_unlock(&params->print_lock);
+		return;
+	}
+	pthread_mutex_unlock(&params->lock_dead);
+	printf("%lld %d %s\n", current_time() - params->start_time, philo->id, status);
     pthread_mutex_unlock(&params->print_lock);
 }
 
 void cleanup(t_params *params, t_philo *philos) {
-    for (int i = 0; i < params->number_of_philosophers; i++)
+    for (int i = 0; i < params->num_philo; i++)
         pthread_mutex_destroy(&params->forks[i]);
     pthread_mutex_destroy(&params->print_lock);
     free(params->forks);
 }
-/*
-The philosophers alternatively eat, think, or sleep.
-While they are eating, they are not thinking nor sleeping;
-while thinking, they are not eating nor sleeping;
-and, of course, while sleeping, they are not eating nor thinking.
-*/
+
 void *philosopher_thread(void *args)
 {
 	t_philo *philo = (t_philo *) args;

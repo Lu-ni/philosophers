@@ -8,11 +8,11 @@
 #include <sys/time.h>
 
 typedef struct s_params {
-    int number_of_philosophers;
+    int num_philo;
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
-    int number_of_times_each_philosopher_must_eat;
+    int max_serving;
 	int dead;
     pthread_mutex_t lock_dead;
     pthread_mutex_t *forks;

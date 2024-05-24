@@ -14,13 +14,14 @@ long long current_time(void) {
 }
 void busy_wait(int microseconds)
 {
-    struct timespec start, current;
-    clock_gettime(CLOCK_MONOTONIC, &start);
+    struct timeval start;
+    struct timeval current;
+    gettimeofday(&start, NULL);
 
     long long elapsed = 0;
     while (elapsed < microseconds)
     {
-        clock_gettime(CLOCK_MONOTONIC, &current);
-        elapsed = (current.tv_sec - start.tv_sec) * 1000000LL + (current.tv_nsec - start.tv_nsec) / 1000;
+        gettimeofday(&current, NULL);
+        elapsed = (current.tv_sec - start.tv_sec) * 1000000LL + (current.tv_usec - start.tv_usec);
     }
 }
