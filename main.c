@@ -6,11 +6,29 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:50 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:27:51 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:55:45 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	init_params(int argc, char **argv, t_params *params)
+{
+	params->num_philo = ft_atoi(argv[1]);
+	if (params->num_philo < 1 || params->num_philo > 200)
+		return (0);
+	params->time_to_die = ft_atoi(argv[2]);
+	params->time_to_eat = ft_atoi(argv[3]);
+	params->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		params->max_serving = ft_atoi(argv[5]);
+	else
+		params->max_serving = -1;
+	params->forks = malloc(params->num_philo * sizeof(pthread_mutex_t));
+	if (!params->forks)
+		return (0);
+	return (1);
+}
 
 int	main(int argc, char **argv)
 {
@@ -19,21 +37,8 @@ int	main(int argc, char **argv)
 	t_philo		philos[200];
 	pthread_t	supervisor;
 
-	if (argc != 5 && argc != 6)
+	if (!init_params(argc, argv, &params) || (argc != 5 && argc != 6))
 		return (1);
-	params.num_philo = ft_atoi(argv[1]);
-	if (params.num_philo < 1 || params.num_philo > 200)
-		return (0);
-	params.time_to_die = ft_atoi(argv[2]);
-	params.time_to_eat = ft_atoi(argv[3]);
-	params.time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		params.max_serving = ft_atoi(argv[5]);
-	else
-		params.max_serving = -1;
-	params.forks = malloc(params.num_philo * sizeof(pthread_mutex_t));
-	if (!params.forks)
-		return (0);
 	i = 0;
 	while (i < params.num_philo)
 		pthread_mutex_init(&params.forks[i++], NULL);

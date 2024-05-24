@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:20 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:33:58 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:43:16 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,27 @@ void	cleanup(t_params *params, t_philo *philos)
 	free(params->forks);
 }
 
+void	try_to_eat(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(philo->right_fork);
+	print_status(philo, "has taken a fork");
+	pthread_mutex_unlock(&philo->last_meal_lock);
+	print_status(philo, "is eating");
+	philo->last_meal_time = current_time();
+	busy_wait(philo->params->time_to_eat * 1000);
+	philo->meals_eaten++;
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+	if (philo->meals_eaten == philo->params->max_serving)
+	{
+		pthread_mutex_lock(&philo->params->philos_done_lock);
+		philo->params->philos_done++;
+		pthread_mutex_unlock(&philo->params->philos_done_lock);
+	}
+}
+
 void	*philosopher_thread(void *args)
 {
 	t_philo	*philo;
@@ -76,23 +97,7 @@ void	*philosopher_thread(void *args)
 	{
 		if (philo->left_fork != philo->right_fork)
 		{
-			pthread_mutex_lock(philo->left_fork);
-			print_status(philo, "has taken a fork");
-			pthread_mutex_lock(philo->right_fork);
-			print_status(philo, "has taken a fork");
-			pthread_mutex_unlock(&philo->last_meal_lock);
-			print_status(philo, "is eating");
-			philo->last_meal_time = current_time();
-			busy_wait(philo->params->time_to_eat * 1000);
-			philo->meals_eaten++;
-			pthread_mutex_unlock(philo->right_fork);
-			pthread_mutex_unlock(philo->left_fork);
-			if (philo->meals_eaten == philo->params->max_serving)
-			{
-				pthread_mutex_lock(&philo->params->philos_done_lock);
-				philo->params->philos_done++;
-				pthread_mutex_unlock(&philo->params->philos_done_lock);
-			}
+			try_to_eat(philo);
 			print_status(philo, "is sleeping");
 			busy_wait(philo->params->time_to_sleep * 1000);
 			print_status(philo, "is thinking");
