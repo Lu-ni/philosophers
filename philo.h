@@ -48,7 +48,7 @@ typedef struct s_philo
 }					t_philo;
 
 long long			current_time(void);
-void				cleanup(t_params *params, t_philo *philos);
+void				cleanup(t_params *params);
 void				print_status(t_philo *philo, const char *status);
 void				init_philos(t_params *params, t_philo *philos);
 void				*philosopher_thread(void *args);

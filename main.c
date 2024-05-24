@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 	t_philo		philos[200];
 	pthread_t	supervisor;
 
-	if (!init_params(argc, argv, &params) || (argc != 5 && argc != 6))
+	if ((argc != 5 && argc != 6) || !init_params(argc, argv, &params))
 		return (1);
 	i = 0;
 	while (i < params.num_philo)
@@ -54,6 +54,6 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < params.num_philo)
 		pthread_join(philos[i++].thread, NULL);
-	cleanup(&params, philos);
+	cleanup(&params);
 	return (0);
 }

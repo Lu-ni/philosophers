@@ -54,7 +54,7 @@ void	print_status(t_philo *philo, const char *status)
 	pthread_mutex_unlock(&params->print_lock);
 }
 
-void	cleanup(t_params *params, t_philo *philos)
+void	cleanup(t_params *params)
 {
 	int	i;
 
