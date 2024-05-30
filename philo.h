@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:58 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:28:01 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:33:50 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ typedef struct s_params
 typedef struct s_philo
 {
 	int				id;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;

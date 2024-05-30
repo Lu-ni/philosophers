@@ -1,7 +1,7 @@
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 SRCS = main.c philo.c utils.c ft_atoi.c
 OBJS_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)

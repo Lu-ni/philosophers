@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:50 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:55:45 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:48:19 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	init_params(int argc, char **argv, t_params *params)
 {
 	params->num_philo = ft_atoi(argv[1]);
+	printf("argc: %i\n", argc);
 	if (params->num_philo < 1 || params->num_philo > 200)
 		return (0);
 	params->time_to_die = ft_atoi(argv[2]);

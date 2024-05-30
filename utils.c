@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:28:04 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:51:51 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:56:18 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ int	checker(t_philo *philos, int i, t_params *params)
 		return (1);
 	}
 	pthread_mutex_lock(&params->philos_done_lock);
-	if (params->max_serving > 1 && params->philos_done >= params->num_philo)
+	if (params->max_serving >= 0 && params->philos_done >= params->num_philo)
 	{
+		pthread_mutex_lock(&params->lock_dead);
 		params->dead = 1;
+		pthread_mutex_unlock(&params->lock_dead);
 		printf("All philosophers have eaten %d times\n",
 			params->max_serving);
 		pthread_mutex_unlock(&params->philos_done_lock);

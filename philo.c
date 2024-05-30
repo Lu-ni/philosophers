@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:20 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:43:16 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:57:20 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ void	init_philos(t_params *params, t_philo *philos)
 	i = 0;
 	while (i < params->num_philo)
 	{
+		philos[i].time_to_die = params->time_to_die;
+		philos[i].time_to_eat = params->time_to_eat;
+		philos[i].time_to_sleep =  params->time_to_sleep;
 		philos[i].id = i + 1;
 		philos[i].left_fork = &params->forks[i];
 		philos[i].right_fork = &params->forks[(i + 1) % params->num_philo];
@@ -71,9 +74,10 @@ void	try_to_eat(t_philo *philo)
 	print_status(philo, "has taken a fork");
 	pthread_mutex_lock(philo->right_fork);
 	print_status(philo, "has taken a fork");
-	pthread_mutex_unlock(&philo->last_meal_lock);
+	pthread_mutex_lock(&philo->last_meal_lock);
 	print_status(philo, "is eating");
 	philo->last_meal_time = current_time();
+	pthread_mutex_unlock(&philo->last_meal_lock);
 	busy_wait(philo->params->time_to_eat * 1000);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->right_fork);
@@ -92,14 +96,14 @@ void	*philosopher_thread(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2)
-		busy_wait(philo->params->time_to_eat * 500);
+		busy_wait(philo->time_to_eat * 500);
 	while (1)
 	{
 		if (philo->left_fork != philo->right_fork)
 		{
 			try_to_eat(philo);
 			print_status(philo, "is sleeping");
-			busy_wait(philo->params->time_to_sleep * 1000);
+			busy_wait(philo->time_to_sleep * 1000);
 			print_status(philo, "is thinking");
 		}
 		pthread_mutex_lock(&philo->params->lock_dead);
