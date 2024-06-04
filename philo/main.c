@@ -6,16 +6,33 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:50 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/30 18:48:19 by bob              ###   ########.fr       */
+/*   Updated: 2024/05/30 19:06:32 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int	parser_error(int argc, char **argv)
+{
+	char *tmp;
+	while (argc > 0)
+	{
+		tmp = argv[argc];
+		while(tmp)
+		{
+			if (!('0' < *tmp && *tmp < '9'))
+				return 1;
+			tmp++;
+		}
+	}
+	return 0;
+}
+
 int	init_params(int argc, char **argv, t_params *params)
 {
+	if (parser_error(argc, argv))
+		return 0;
 	params->num_philo = ft_atoi(argv[1]);
-	printf("argc: %i\n", argc);
 	if (params->num_philo < 1 || params->num_philo > 200)
 		return (0);
 	params->time_to_die = ft_atoi(argv[2]);
