@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:50 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/30 19:06:32 by bob              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:36:39 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 int	parser_error(int argc, char **argv)
 {
 	char *tmp;
-	while (argc > 0)
+	int i;
+
+	i = 1;
+	while (argc > i)
 	{
-		tmp = argv[argc];
-		while(tmp)
+		tmp = argv[i];
+		while(*tmp)
 		{
-			if (!('0' < *tmp && *tmp < '9'))
+			if (!('0' <= *tmp && *tmp <= '9'))
 				return 1;
 			tmp++;
 		}
+		i++;
 	}
 	return 0;
 }
@@ -42,9 +46,6 @@ int	init_params(int argc, char **argv, t_params *params)
 		params->max_serving = ft_atoi(argv[5]);
 	else
 		params->max_serving = -1;
-	params->forks = malloc(params->num_philo * sizeof(pthread_mutex_t));
-	if (!params->forks)
-		return (0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:20 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/30 18:57:20 by bob              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:38:26 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	cleanup(t_params *params)
 	while (i < params->num_philo)
 		pthread_mutex_destroy(&params->forks[i++]);
 	pthread_mutex_destroy(&params->print_lock);
-	free(params->forks);
 }
 
 void	try_to_eat(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:58 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/30 18:33:50 by bob              ###   ########.fr       */
+/*   Updated: 2024/06/11 16:18:52 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_params
 	int				philos_done;
 	int				dead;
 	pthread_mutex_t	lock_dead;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	forks[200];
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	philos_done_lock;
 	long long		start_time;
