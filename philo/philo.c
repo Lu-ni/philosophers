@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:20 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/06/22 02:25:05 by bob              ###   ########.fr       */
+/*   Updated: 2024/06/22 02:32:31 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ void	cleanup(t_params *params)
 
 void	try_to_eat(t_philo *philo)
 {
+	if (philo->meals_eaten == philo->params->max_serving)
+	{
+		pthread_mutex_lock(&philo->params->philos_done_lock);
+		philo->params->philos_done++;
+		pthread_mutex_unlock(&philo->params->philos_done_lock);
+	}
 	pthread_mutex_lock(philo->left_fork);
 	print_status(philo, "has taken a fork");
 	pthread_mutex_lock(philo->right_fork);
@@ -81,12 +87,6 @@ void	try_to_eat(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
-	if (philo->meals_eaten == philo->params->max_serving)
-	{
-		pthread_mutex_lock(&philo->params->philos_done_lock);
-		philo->params->philos_done++;
-		pthread_mutex_unlock(&philo->params->philos_done_lock);
-	}
 }
 
 void	*philosopher_thread(void *args)

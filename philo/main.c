@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:50 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/06/22 02:26:17 by bob              ###   ########.fr       */
+/*   Updated: 2024/06/22 02:35:05 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	parser_error(int argc, char **argv)
 int	init_params(int argc, char **argv, t_params *params)
 {
 	if (parser_error(argc, argv))
+	{
+		printf("Parsing error. ONLY use number!\n");
 		return (0);
+	}
 	params->num_philo = ft_atoi(argv[1]);
 	if (params->num_philo < 1 || params->num_philo > 200)
 		return (0);
