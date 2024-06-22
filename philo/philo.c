@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:20 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/06/11 16:38:26 by bob              ###   ########.fr       */
+/*   Updated: 2024/06/22 02:25:05 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_philos(t_params *params, t_philo *philos)
 	{
 		philos[i].time_to_die = params->time_to_die;
 		philos[i].time_to_eat = params->time_to_eat;
-		philos[i].time_to_sleep =  params->time_to_sleep;
+		philos[i].time_to_sleep = params->time_to_sleep;
 		philos[i].id = i + 1;
 		philos[i].left_fork = &params->forks[i];
 		philos[i].right_fork = &params->forks[(i + 1) % params->num_philo];
