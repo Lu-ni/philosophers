@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:27:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/05/24 16:33:05 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:46:41 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	ft_atoi(const char *str)
 	strcopy = (char *)str;
 	number = 0;
 	signe = 1;
-	while (*strcopy == ' ' | *strcopy == '\t' | *strcopy == '\n'
-		| *strcopy == '\r' | *strcopy == '\v' | *strcopy == '\f')
+	while ((*strcopy == ' ') | (*strcopy == '\t') | (*strcopy == '\n')
+		| (*strcopy == '\r') | (*strcopy == '\v') | (*strcopy == '\f'))
 		strcopy++;
 	if (*strcopy == '-' || *strcopy == '+')
 	{
